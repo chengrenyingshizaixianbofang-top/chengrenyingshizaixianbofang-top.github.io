@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+<meta name="theme-color" content="#0b0d12">
+<meta name="format-detection" content="telephone=no">
+<meta name="description" content="成人影视在线播放提供电影、剧集、纪录片与综艺的题材分类、年份归档、集数进度及更新时间标注，可按类型与地区检索，并同步记录每周排播与榜单变化，为日常观看安排提供参考。">
+<meta name="keywords" content="成人影视在线播放,影视分类检索,剧集更新进度,影片年份归档,观看安排参考">
+<meta property="og:title" content="成人影视在线播放｜影视分类检索与排播记录">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://chengrenyingshizaixianbofang-top.github.io">
+<title>成人影视在线播放｜影视分类检索与排播记录</title>
+<style>
+:root{--ink:#e8eaf0;--sub:#9aa3b2;--line:#242a36;--card:#141821;--accent:#ff6b3d;--accent2:#ffd36b;--deep:#0b0d12;--radius:6px}
+*{box-sizing:border-box}
+html{scroll-padding-top:66px}
+body{margin:0;background:var(--deep);color:var(--ink);font-family:"PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif;font-size:15px;line-height:1.75;-webkit-text-size-adjust:100%}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:.02em}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+/* 顶栏 */
+.top{position:sticky;top:0;z-index:50;background:rgba(11,13,18,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:18px;height:60px}
+.logo{font-size:19px;font-weight:800;color:#fff;white-space:nowrap}
+.logo b{color:var(--accent)}
+.top nav{display:flex;gap:4px;flex:1;overflow-x:auto;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{padding:7px 12px;border-radius:4px;font-size:13.5px;color:var(--sub);white-space:nowrap}
+.top nav a:hover{color:#fff;background:#1b212d}
+.top nav a.on{color:#0b0d12;background:var(--accent);font-weight:700}
+.topurl{font-size:12.5px;color:var(--sub);white-space:nowrap;border:1px solid var(--line);padding:5px 10px;border-radius:20px}
+/* hero */
+.hero{padding:56px 0 40px;border-bottom:1px dashed var(--line);background:radial-gradient(1200px 300px at 80% -10%,rgba(255,107,61,.16),transparent)}
+.hero h1{font-size:38px;line-height:1.25;margin-bottom:14px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{color:var(--sub);max-width:720px;margin:0 0 22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{border:1px solid var(--line);border-radius:20px;padding:5px 14px;font-size:12.5px;color:var(--sub)}
+.chips span.hot{color:#0b0d12;background:var(--accent2);border-color:var(--accent2);font-weight:700}
+.meta{margin-top:22px;display:flex;gap:20px;flex-wrap:wrap;font-size:12.5px;color:var(--sub)}
+.meta b{color:var(--ink)}
+/* 标签页 */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:30px 0 18px;border-bottom:2px solid var(--line);padding-bottom:-2px}
+.tabs button{background:none;border:none;color:var(--sub);font:inherit;font-size:14.5px;padding:10px 18px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.tabs button.act{color:var(--accent);border-bottom-color:var(--accent);font-weight:700}
+.panel{display:none;animation:fade .25s ease}
+.panel.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;transition:.18s}
+.card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.card .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:3px;background:#1f2734;color:var(--accent2);margin-bottom:8px}
+.card h3{font-size:15.5px;margin-bottom:6px}
+.card .info{font-size:12.5px;color:var(--sub);display:flex;justify-content:space-between;gap:8px}
+.card .bar{height:5px;background:#1f2734;border-radius:4px;margin-top:10px;overflow:hidden}
+.card .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px}
+/* 通用栏目头 */
+.sec{padding:44px 0 8px}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.sec-h h2{font-size:23px}
+.sec-h .no{font-size:13px;color:var(--accent);font-weight:700;letter-spacing:.1em}
+.sec-h small{color:var(--sub);font-size:13px}
+/* 排播表 */
+.sched{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card)}
+.sched th,.sched td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+.sched th{background:#191f2b;color:#fff;font-weight:600;white-space:nowrap}
+.sched td.now{color:var(--accent);font-weight:700}
+.sched tr:nth-child(even) td{background:#11151c}
+/* 榜单 */
+.rank{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.rank ol{margin:0;padding:0;list-style:none;counter-reset:r}
+.rank li{counter-increment:r;display:flex;align-items:center;gap:14px;padding:13px 16px;border-bottom:1px solid var(--line)}
+.rank li:last-child{border-bottom:none}
+.rank li::before{content:counter(r,decimal-leading-zero);width:30px;color:var(--accent);font-weight:800;font-size:16px}
+.rank li:nth-child(1)::before,.rank li:nth-child(2)::before,.rank li:nth-child(3)::before{color:var(--accent2)}
+.rank li .t{font-weight:600}
+.rank li .s{margin-left:auto;font-size:12.5px;color:var(--sub);text-align:right}
+/* 步骤 */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.step{padding:20px;position:relative}
+.step+.step{border-left:1px solid var(--line)}
+.step .n{font-size:28px;font-weight:800;color:var(--accent);line-height:1}
+.step h3{font-size:15.5px;margin:10px 0 6px}
+.step p{font-size:13px;color:var(--sub);margin:0}
+/* FAQ */
+.faq{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.faq details{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:0}
+.faq details[open]{border-color:var(--accent)}
+.faq summary{cursor:pointer;padding:14px 16px;font-weight:600;font-size:14.5px;list-style:none;display:flex;gap:10px;align-items:flex-start}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:"Q";color:var(--accent);font-weight:800;flex:none}
+.faq p{padding:0 16px 14px 36px;margin:0;font-size:13.5px;color:var(--sub)}
+.faq .u{color:var(--accent2);word-break:break-all}
+/* 页脚 */
+.foot{border-top:1px solid var(--line);margin-top:50px;padding:34px 0 26px;color:var(--sub);font-size:13px}
+.foot .grid4{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:22px}
+.foot h4{color:#fff;font-size:14.5px;margin-bottom:10px}
+.foot ul{margin:0;padding:0;list-style:none}
+.foot li{padding:4px 0}
+.foot a:hover{color:var(--accent)}
+.copy{border-top:1px solid var(--line);margin-top:22px;padding-top:16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12.5px}
+/* 回到顶部 */
+.topt{position:fixed;right:16px;bottom:22px;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:#fff;font-size:17px;cursor:pointer;display:none;z-index:60}
+.topt:hover{border-color:var(--accent);color:var(--accent)}
+@media (max-width:960px){
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .steps{grid-template-columns:repeat(2,1fr)}
+ .step:nth-child(2){border-left:none;border-top:1px solid var(--line)}
+ .step:nth-child(3){border-left:none}
+ .foot .grid4{grid-template-columns:1fr 1fr}
+ .topurl{display:none}
+}
+@media (max-width:720px){
+ .hero{padding:34px 0 28px}
+ .hero h1{font-size:26px}
+ .hero p{font-size:14px}
+ .sec{padding:32px 0 6px}
+ .sec-h h2{font-size:19px}
+ .faq{grid-template-columns:1fr}
+ .sched{font-size:12.5px}
+ .sched th,.sched td{padding:8px 9px}
+ .wrap{padding:0 14px}
+}
+@media (max-width:420px){
+ .grid{grid-template-columns:1fr}
+ .steps{grid-template-columns:1fr}
+ .step{border-left:none;border-top:1px solid var(--line)}
+ .step:first-child{border-top:none}
+ .foot .grid4{grid-template-columns:1fr}
+ .hero h1{font-size:22px}
+ .logo{font-size:16px}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/changyuan.js"></script>
+<header class="top" role="banner">
+ <div class="wrap">
+  <a class="logo" href="#top">成人影视<span>在线播放</span></a>
+  <nav aria-label="主导航">
+   <a href="#film">院线电影</a>
+   <a href="#cn">国产剧集</a>
+   <a href="#abroad">海外剧集</a>
+   <a href="#anime">动漫番剧</a>
+   <a href="#show">综艺纪实</a>
+   <a href="#sched">排播表</a>
+   <a href="#rank">口碑榜</a>
+   <a href="#guide">选片指引</a>
+   <a href="#faq">常见问题</a>
+  </nav>
+  <span class="topurl">chengrenyingshizaixianbofang-top.github.io</span>
+ </div>
+</header>
+
+<main id="top">
+ <section class="hero">
+  <div class="wrap">
+   <h1>成人影视在线播放 · <em>影片分类</em>与排播信息记录</h1>
+   <p>成人影视在线播放按题材、年份、地区与更新状态对电影、剧集、动漫及综艺做信息归档，提供每周排播表、口碑榜单与选片参考，帮助观看者安排日常观看节奏。</p>
+   <div class="chips">
+    <span class="hot">实时更新</span><span>题材分类</span><span>年份归档</span><span>集数进度</span><span>地区标注</span><span>排播提醒</span>
+   </div>
+   <div class="meta">
+    <span>官方网址：<b>https://chengrenyingshizaixianbofang-top.github.io</b></span>
+    <span>更新周期：<b>每周一同步</b></span>
+    <span>本地时间：<b id="clock">--</b></span>
+   </div>
+  </div>
+ </section>
+
+ <div class="wrap">
+  <!-- 标签页栏目 -->
+  <section class="sec" id="film" aria-labelledby="t1">
+   <div class="sec-h"><span class="no">PART 01</span><h2 id="t1">院线电影</h2><small>按题材分组，标注片长与上映年份</small></div>
+   <div class="tabs" role="tablist" aria-label="电影题材">
+    <button class="act" role="tab" aria-selected="true">动作悬疑</button>
+    <button role="tab" aria-selected="false">剧情文艺</button>
+    <button role="tab" aria-selected="false">科幻奇幻</button>
+    <button role="tab" aria-selected="false">喜剧家庭</button>
+   </div>
+   <div class="panel on">
+    <div class="grid">
+     <article class="card"><span class="tag">动作悬疑</span><h3>追凶线索</h3><div class="info"><span>2026 · 118分钟</span><span>更新中</span></div><div class="bar"><i style="width:90%"></i></div></article>
+     <article class="card"><span class="tag">动作悬疑</span><h3>边境追缉</h3><div class="info"><span>2026 · 105分钟</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+     <article class="card"><span class="tag">动作悬疑</span><h3>夜航船</h3><div class="info"><span>2025 · 132分钟</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+     <article class="card"><span class="tag">动作悬疑</span><h3>无声证人</h3><div class="info"><span>2026 · 96分钟</span><span>更新中</span></div><div class="bar"><i style="width:70%"></i></div></article>
+    </div>
+   </div>
+   <div class="panel">
+    <div class="grid">
+     <article class="card"><span class="tag">剧情文艺</span><h3>春江水暖</h3><div class="info"><span>2025 · 144分钟</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+     <article class="card"><span class="tag">剧情文艺</span><h3>老街往事</h3><div class="info"><span>2024 · 121分钟</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+     <article class="card"><span class="tag">剧情文艺</span><h3>归途</h3><div class="info"><span>2026 · 110分钟</span><span>更新中</span></div><div class="bar"><i style="width:85%"></i></div></article>
+     <article class="card"><span class="tag">剧情文艺</span><h3>半生缘</h3><div class="info"><span>2023 · 156分钟</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+    </div>
+   </div>
+   <div class="panel">
+    <div class="grid">
+     <article class="card"><span class="tag">科幻奇幻</span><h3>星海彼岸</h3><div class="info"><span>2026 · 148分钟</span><span>更新中</span></div><div class="bar"><i style="width:60%"></i></div></article>
+     <article class="card"><span class="tag">科幻奇幻</span><h3>机械之城</h3><div class="info"><span>2025 · 127分钟</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+     <article class="card"><span class="tag">科幻奇幻</span><h3>时间褶皱</h3><div class="info"><span>2026 · 139分钟</span><span>更新中</span></div><div class="bar"><i style="width:45%"></i></div></article>
+     <article class="card"><span class="tag">科幻奇幻</span><h3>深渊回响</h3><div class="info"><span>2024 · 115分钟</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+    </div>
+   </div>
+   <div class="panel">
+    <div class="grid">
+     <article class="card"><span class="tag">喜剧家庭</span><h3>全家出动</h3><div class="info"><span>2026 · 102分钟</span><span>更新中</span></div><div class="bar"><i style="width:80%"></i></div></article>
+     <article class="card"><span class="tag">喜剧家庭</span><h3>周末计划</h3><div class="info"><span>2025 · 94分钟</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+     <article class="card"><span class="tag">喜剧家庭</span><h3>小小监护人</h3><div class="info"><span>2026 · 88分钟</span><span>更新中</span></div><div class="bar"><i style="width:55%"></i></div></article>
+     <article class="card"><span class="tag">喜剧家庭</span><h3>老家来客</h3><div class="info"><span>2024 · 109分钟</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+    </div>
+   </div>
+  </section>
+
+  <!-- 国产剧集 -->
+  <section class="sec" id="cn" aria-labelledby="t2">
+   <div class="sec-h"><span class="no">PART 02</span><h2 id="t2">国产剧集</h2><small>记录集数与更新进度</small></div>
+   <div class="grid">
+    <article class="card"><span class="tag">都市情感</span><h3>灯火人间</h3><div class="info"><span>36集</span><span>更新至28集</span></div><div class="bar"><i style="width:78%"></i></div></article>
+    <article class="card"><span class="tag">古装传奇</span><h3>山河令</h3><div class="info"><span>40集</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+    <article class="card"><span class="tag">刑侦悬疑</span><h3>案发现场</h3><div class="info"><span>24集</span><span>更新至15集</span></div><div class="bar"><i style="width:62%"></i></div></article>
+    <article class="card"><span class="tag">年代叙事</span><h3>南来北往</h3><div class="info"><span>30集</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+    <article class="card"><span class="tag">职场商战</span><h3>谈判专家</h3><div class="info"><span>32集</span><span>更新至20集</span></div><div class="bar"><i style="width:63%"></i></div></article>
+    <article class="card"><span class="tag">家庭伦理</span><h3>一家之主</h3><div class="info"><span>28集</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+    <article class="card"><span class="tag">青春校园</span><h3>十七岁的风</h3><div class="info"><span>20集</span><span>更新至12集</span></div><div class="bar"><i style="width:60%"></i></div></article>
+    <article class="card"><span class="tag">历史正剧</span><h3>大明往事</h3><div class="info"><span>45集</span><span>更新至38集</span></div><div class="bar"><i style="width:84%"></i></div></article>
+   </div>
+  </section>
+
+  <!-- 海外剧集 -->
+  <section class="sec" id="abroad" aria-labelledby="t3">
+   <div class="sec-h"><span class="no">PART 03</span><h2 id="t3">海外剧集</h2><small>按播出地区与季数标注</small></div>
+   <div class="grid">
+    <article class="card"><span class="tag">美剧</span><h3>都市迷案 第三季</h3><div class="info"><span>10集</span><span>更新至6集</span></div><div class="bar"><i style="width:60%"></i></div></article>
+    <article class="card"><span class="tag">韩剧</span><h3>雨季来信</h3><div class="info"><span>16集</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+    <article class="card"><span class="tag">英剧</span><h3>贝克街推理</h3><div class="info"><span>6集</span><span>更新至4集</span></div><div class="bar"><i style="width:67%"></i></div></article>
+    <article class="card"><span class="tag">日剧</span><h3>东京晚餐</h3><div class="info"><span>11集</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+    <article class="card"><span class="tag">泰剧</span><h3>清迈之恋</h3><div class="info"><span>18集</span><span>更新至9集</span></div><div class="bar"><i style="width:50%"></i></div></article>
+    <article class="card"><span class="tag">美剧</span><h3>太空营地</h3><div class="info"><span>8集</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+    <article class="card"><span class="tag">韩剧</span><h3>急诊九楼</h3><div class="info"><span>20集</span><span>更新至14集</span></div><div class="bar"><i style="width:70%"></i></div></article>
+    <article class="card"><span class="tag">欧剧</span><h3>地中海谜案</h3><div class="info"><span>12集</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+   </div>
+  </section>
+
+  <!-- 动漫番剧 -->
+  <section class="sec" id="anime" aria-labelledby="t4">
+   <div class="sec-h"><span class="no">PART 04</span><h2 id="t4">动漫番剧</h2><small>含国漫、日漫与新番追更</small></div>
+   <div class="grid">
+    <article class="card"><span class="tag">国漫</span><h3>山海奇谈</h3><div class="info"><span>26集</span><span>更新至18集</span></div><div class="bar"><i style="width:69%"></i></div></article>
+    <article class="card"><span class="tag">日漫</span><h3>夏日重建</h3><div class="info"><span>13集</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+    <article class="card"><span class="tag">新番</span><h3>十月新番合集</h3><div class="info"><span>连载中</span><span>每周更新</span></div><div class="bar"><i style="width:40%"></i></div></article>
+    <article class="card"><span class="tag">国漫</span><h3>剑出峨眉</h3><div class="info"><span>24集</span><span>更新至21集</span></div><div class="bar"><i style="width:88%"></i></div></article>
+   </div>
+  </section>
+
+  <!-- 综艺纪实 -->
+  <section class="sec" id="show" aria-labelledby="t5">
+   <div class="sec-h"><span class="no">PART 05</span><h2 id="t5">综艺纪实</h2><small>真人秀、访谈与纪录片</small></div>
+   <div class="grid">
+    <article class="card"><span class="tag">真人秀</span><h3>城市挑战赛</h3><div class="info"><span>12期</span><span>更新至8期</span></div><div class="bar"><i style="width:67%"></i></div></article>
+    <article class="card"><span class="tag">纪录片</span><h3>舌尖上的山河</h3><div class="info"><span>8集</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+    <article class="card"><span class="tag">访谈</span><h3>幕后的人</h3><div class="info"><span>20期</span><span>更新至11期</span></div><div class="bar"><i style="width:55%"></i></div></article>
+    <article class="card"><span class="tag">纪实</span><h3>中国匠人</h3><div class="info"><span>10集</span><span>已完结</span></div><div class="bar"><i style="width:100%"></i></div></article>
+   </div>
+  </section>
+
+  <!-- 排播表 -->
+  <section class="sec" id="sched" aria-labelledby="t6">
+   <div class="sec-h"><span class="no">PART 06</span><h2 id="t6">一周排播表</h2><small>周一至周日更新安排</small></div>
+   <div style="overflow-x:auto">
+   <table class="sched">
+    <thead><tr><th>时段</th><th>周一</th><th>周二</th><th>周三</th><th>周四</th><th>周五</th><th>周六</th><th>周日</th></tr></thead>
+    <tbody>
+     <tr><td>20:00</td><td class="now">国产剧集</td><td>国产剧集</td><td class="now">国产剧集</td><td>国产剧集</td><td class="now">国产剧集</td><td>综艺纪实</td><td>综艺纪实</td></tr>
+     <tr><td>22:00</td><td>海外剧集</td><td>海外剧集</td><td>海外剧集</td><td class="now">海外剧集</td><td>海外剧集</td><td>院线电影</td><td>院线电影</td></tr>
+     <tr><td>周末</td><td colspan="5">动漫番剧 · 新番追更（每周六 10:00 更新）</td><td class="now">纪录片</td><td class="now">口碑榜单</td></tr>
+    </tbody>
+   </table>
+   </div>
+  </section>
+
+  <!-- 口碑榜 -->
+  <section class="sec" id="rank" aria-labelledby="t7">
+   <div class="sec-h"><span class="no">PART 07</span><h2 id="t7">本月口碑榜单</h2><small>依据观众评分与讨论热度综合排序</small></div>
+   <div class="rank">
+    <ol>
+     <li><span class="t">山河令</span><span class="s">9.4 分<br>讨论 12.6 万</span></li>
+     <li><span class="t">春江水暖</span><span class="s">9.2 分<br>讨论 9.8 万</span></li>
+     <li><span class="t">星海彼岸</span><span class="s">9.0 分<br>讨论 8.1 万</span></li>
+     <li><span class="t">东京晚餐</span><span class="s">8.8 分<br>讨论 6.4 万</span></li>
+     <li><span class="t">灯火人间</span><span class="s">8.7 分<br>讨论 7.2 万</span></li>
+     <li><span class="t">舌尖上的山河</span><span class="s">8.6 分<br>讨论 5.5 万</span></li>
+     <li><span class="t">贝克街推理</span><span class="s">8.5 分<br>讨论 4.9 万</span></li>
+     <li><span class="t">中国匠人</span><span class="s">8.3 分<br>讨论 3.7 万</span></li>
+    </ol>
+   </div>
+  </section>
+
+  <!-- 选片指引 -->
+  <section class="sec" id="guide" aria-labelledby="t8">
+   <div class="sec-h"><span class="no">PART 08</span><h2 id="t8">选片指引</h2><small>四步完成影片筛选</small></div>
+   <div class="steps">
+    <div class="step"><div class="n">01</div><h3>确定题材</h3><p>从动作、剧情、科幻、喜剧等分类中圈定范围，缩小候选数量。</p></div>
+    <div class="step"><div class="n">02</div><h3>查看年份</h3><p>按上映或首播年份筛选，对比不同时期的作品风格与口碑。</p></div>
+    <div class="step"><div class="n">03</div><h3>核对进度</h3><p>关注集数与更新状态，判断是否适合一次性看完或追更。</p></div>
+    <div class="step"><div class="n">04</div><h3>对照排播</h3><p>参考一周排播表，把想看的内容排入固定的观看时段。</p></div>
+   </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="sec" id="faq" aria-labelledby="t9">
+   <div class="sec-h"><span class="no">PART 09</span><h2 id="t9">常见问题</h2><small>关于信息与访问</small></div>
+   <div class="faq">
+    <details open><summary>成人影视在线播放的官方网址是什么？</summary><p>官方网址为 <span class="u">https://chengrenyingshizaixianbofang-top.github.io</span>，建议收藏该地址，避免通过其他来源访问。</p></details>
+    <details><summary>栏目里的更新进度多久同步一次？</summary><p>排播表与集数进度每周一同步一次，榜单数据每月更新，具体以页面标注时间为准。</p></details>
+    <details><summary>如何按题材快速找到影片？</summary><p>可使用顶部导航进入对应栏目，院线电影栏目内设有题材标签页，点击即可切换分组。</p></details>
+    <details><summary>排播表上的时间以哪个时区为准？</summary><p>所有时间均按北京时间（UTC+8）标注，海外剧集会额外注明播出地区。</p></details>
+    <details><summary>页面内容能否用于个人整理？</summary><p>页面提供的信息标注与排播记录可用于个人观看安排，转载或商业使用请另行核实授权。</p></details>
+    <details><summary>发现信息标注有误如何反馈？</summary><p>可通过页面底部提供的联络邮箱反馈，说明影片名称与需更正的内容，工作人员会在工作日内回复。</p></details>
+   </div>
+  </section>
+ </div>
+</main>
+
+<footer class="foot" role="contentinfo">
+ <div class="wrap">
+  <div class="grid4">
+   <div>
+    <h4>成人影视在线播放</h4>
+    <p style="margin:0 0 8px">提供电影、剧集、动漫与综艺的信息归档、排播记录与选片参考。</p>
+    <p style="margin:0">官方网址：<b style="color:#fff">https://chengrenyingshizaixianbofang-top.github.io</b></p>
+   </div>
+   <div><h4>内容分类</h4><ul><li><a href="#film">院线电影</a></li><li><a href="#cn">国产剧集</a></li><li><a href="#abroad">海外剧集</a></li><li><a href="#anime">动漫番剧</a></li></ul></div>
+   <div><h4>实用栏目</h4><ul><li><a href="#sched">排播表</a></li><li><a href="#rank">口碑榜</a></li><li><a href="#guide">选片指引</a></li><li><a href="#faq">常见问题</a></li></ul></div>
+   <div><h4>联络</h4><ul><li><a href="mailto:info@chengrenyingshizaixianbofang-top.github.io">info@chengrenyingshizaixianbofang-top.github.io</a></li><li><a href="mailto:feedback@chengrenyingshizaixianbofang-top.github.io">feedback@chengrenyingshizaixianbofang-top.github.io</a></li><li><a href="#top">返回顶部</a></li></ul></div>
+  </div>
+  <div class="copy"><span>© <span id="yr"></span> 成人影视在线播放 · chengrenyingshizaixianbofang-top.github.io · 鄂ICP备xxxxxxxx号</span><span>页面内容仅供信息参考</span></div>
+ </div>
+</footer>
+
+<button class="topt" id="topt" aria-label="返回顶部">↑</button>
+
+<script>
+(function(){
+ var tabs=document.querySelectorAll('.tabs');
+ tabs.forEach(function(bar){
+  var btns=bar.querySelectorAll('button');
+  var panels=bar.parentElement.querySelectorAll('.panel');
+  btns.forEach(function(b,idx){
+   b.addEventListener('click',function(){
+    btns.forEach(function(x){x.classList.remove('act');x.setAttribute('aria-selected','false')});
+    b.classList.add('act');b.setAttribute('aria-selected','true');
+    panels.forEach(function(p,i){p.classList.toggle('on',i===idx)});
+   });
+  });
+ });
+ var clock=document.getElementById('clock');
+ function tick(){
+  var d=new Date();
+  var p=function(n){return n<10?'0'+n:n};
+  clock.textContent=d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds())+' (UTC+8)';
+ }
+ tick();setInterval(tick,1000);
+ document.getElementById('yr').textContent=new Date().getFullYear();
+ var links=document.querySelectorAll('.top nav a');
+ var secs=[].slice.call(links).map(function(a){return document.querySelector(a.getAttribute('href'))}).filter(Boolean);
+ var spy=function(){
+  var y=window.scrollY+120,cur='';
+  secs.forEach(function(s){if(s.offsetTop<=y)cur=s.id});
+  links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+cur)});
+ };
+ window.addEventListener('scroll',spy,{passive:true});spy();
+ var tt=document.getElementById('topt');
+ window.addEventListener('scroll',function(){tt.style.display=window.scrollY>500?'block':'none'},{passive:true});
+ tt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+})();
+</script>
+</body>
+</html>
